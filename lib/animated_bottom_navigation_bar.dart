@@ -10,7 +10,7 @@ import 'src/exceptions.dart';
 
 class AnimatedBottomNavigationBar extends StatefulWidget {
   /// Icon data to render in the tab bar.
-  final List<IconData> icons;
+  final List<IconDataOrImgProvider> icons;
 
   /// Handler which is passed every updated active index.
   final Function(int) onTap;
@@ -215,18 +215,11 @@ class _AnimatedBottomNavigationBarState
       }
 
       items.add(
-        NavigationBarItem(
+        _navigationBarItem(
+          data: widget.icons[i],
           isActive: i == widget.activeIndex,
-          bubbleRadius: _bubbleRadius,
-          maxBubbleRadius: widget.splashRadius,
-          bubbleColor: widget.splashColor,
-          activeColor: widget.activeColor,
-          inactiveColor: widget.inactiveColor,
-          iconData: widget.icons[i],
-          iconScale: _iconScale,
-          iconSize: widget.iconSize,
-          onTap: () => widget.onTap(widget.icons.indexOf(widget.icons[i])),
-        ),
+          ontap: () => widget.onTap(widget.icons.indexOf(widget.icons[i]))
+          )        
       );
 
       if (widget.gapLocation == GapLocation.end &&
@@ -240,8 +233,56 @@ class _AnimatedBottomNavigationBarState
     }
     return items;
   }
-}
 
+  Widget _navigationBarItem({@required IconDataOrImgProvider data,@required bool isActive,
+  @required Function() ontap})
+  {
+    if(data.icon != null)
+    {
+      return NavigationBarItem(
+            isActive: isActive,
+            bubbleRadius: _bubbleRadius,
+            maxBubbleRadius: widget.splashRadius,
+            bubbleColor: widget.splashColor,
+            activeColor: widget.activeColor,
+            inactiveColor: widget.inactiveColor,
+            iconData: data.icon,
+            iconScale: _iconScale,
+            iconSize: widget.iconSize,
+            onTap: ontap,
+          );
+    }
+    else if(data.img != null)
+    {
+      return NavigationBarItem(
+            isActive: isActive,
+            bubbleRadius: _bubbleRadius,
+            maxBubbleRadius: widget.splashRadius,
+            bubbleColor: widget.splashColor,
+            activeColor: widget.activeColor,
+            inactiveColor: widget.inactiveColor,
+            iconImg: data.img,
+            iconScale: _iconScale,
+            iconSize: widget.iconSize,
+            onTap: ontap,
+          );
+    }
+    else
+      throw Exception('no imageprovider or icon found');
+  }
+}
+///just a simple struct which serves as a wrapper of 2 different datatypes
+class IconDataOrImgProvider
+{
+  ///either icon or img
+  final IconData icon;
+  ///either icon or img
+  final ImageProvider img;
+  IconDataOrImgProvider({this.icon,this.img})
+  :
+  assert(icon!=null || img!=null);
+  
+}
 enum NotchSmoothness { defaultEdge, softEdge, smoothEdge, verySmoothEdge }
 
 enum GapLocation { none, center, end }

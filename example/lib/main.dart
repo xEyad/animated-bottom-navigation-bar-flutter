@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -40,11 +42,11 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   Animation<double> animation;
   CurvedAnimation curve;
 
-  final iconList = <IconData>[
-    Icons.brightness_5,
-    Icons.brightness_4,
-    Icons.brightness_6,
-    Icons.brightness_7,
+  final iconList = <IconDataOrImgProvider>[
+    IconDataOrImgProvider(icon: Icons.brightness_5,),
+    IconDataOrImgProvider(icon: Icons.brightness_4,),
+    IconDataOrImgProvider(img: AssetImage('testIcon.png'),),
+    IconDataOrImgProvider(icon: Icons.brightness_7,),
   ];
 
   @override
@@ -129,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
 }
 
 class NavigationScreen extends StatefulWidget {
-  final IconData iconData;
+  final IconDataOrImgProvider iconData;
 
   NavigationScreen(this.iconData) : super();
 
@@ -193,7 +195,7 @@ class _NavigationScreenState extends State<NavigationScreen> with TickerProvider
           centerOffset: Offset(80, 80),
           maxRadius: MediaQuery.of(context).size.longestSide * 1.1,
           child: Icon(
-            widget.iconData,
+            widget.iconData.icon,
             color: HexColor('#FFA400'),
             size: 160,
           ),

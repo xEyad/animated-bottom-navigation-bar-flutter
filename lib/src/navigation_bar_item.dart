@@ -8,7 +8,10 @@ class NavigationBarItem extends StatelessWidget {
   final Color bubbleColor;
   final Color activeColor;
   final Color inactiveColor;
+  ///either iconData or imageProvider
   final IconData iconData;
+  ///either iconData or imageProvider
+  final ImageProvider iconImg;
   final double iconScale;
   final double iconSize;
   final VoidCallback onTap;
@@ -21,17 +24,20 @@ class NavigationBarItem extends StatelessWidget {
     this.activeColor,
     this.inactiveColor,
     this.iconData,
+    this.iconImg,
     this.iconScale,
     this.iconSize,
     this.onTap,
-  }) : super();
+  }) : 
+  assert(iconData!=null || iconImg!=null),
+  super();
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        height: double.infinity,
-        width: double.infinity,
+        // height: double.infinity,
+        // width: double.infinity,
         child: CustomPaint(
           painter: BubblePainter(
             bubbleRadius: isActive ? bubbleRadius : 0,
@@ -41,11 +47,7 @@ class NavigationBarItem extends StatelessWidget {
           child: InkWell(
             child: Transform.scale(
               scale: isActive ? iconScale : 1,
-              child: Icon(
-                iconData,
-                color: isActive ? activeColor : inactiveColor,
-                size: iconSize,
-              ),
+              child: _icon(),
             ),
             splashColor: Colors.transparent,
             focusColor: Colors.transparent,
@@ -56,6 +58,28 @@ class NavigationBarItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _icon()
+  {
+    if(iconData!=null)
+    {
+      return Icon(
+                iconData,
+                color: isActive ? activeColor : inactiveColor,
+                size: iconSize,
+              );
+    }
+    else
+    {
+      return Image(
+        image: iconImg,
+        color: isActive ? activeColor : inactiveColor,
+        width: iconSize,
+        height: iconSize,        
+        fit: BoxFit.contain,
+        );
+    }
   }
 }
 

@@ -67,6 +67,13 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
   /// Free space width between tab bar items. The preferred width is equal to total width of [FloatingActionButton] and double [notchMargin].
   final double gapWidth;
 
+  ///the separating distance between [label] and icon.
+  ///useless if [label] is null
+  final double labelGap;
+  ///distance from the top of the bottom bar
+  ///useless if [label] is null
+  final double gapFromTop;
+
   AnimatedBottomNavigationBar({
     Key key,
     @required this.icons,
@@ -88,6 +95,8 @@ class AnimatedBottomNavigationBar extends StatefulWidget {
     this.notchSmoothness = NotchSmoothness.softEdge,
     this.gapLocation = GapLocation.none,
     this.gapWidth = 72,
+    this.gapFromTop = 10,
+    this.labelGap = 5
   })  : assert(icons != null),
         assert(icons.length >= 2 && icons.length <= 5),
         assert(activeIndex != null),
@@ -249,7 +258,10 @@ class _AnimatedBottomNavigationBarState
             iconData: data.icon,
             iconScale: _iconScale,
             iconSize: widget.iconSize,
+            label: data.label,
             onTap: ontap,
+            labelGap:widget.labelGap,
+            gapFromTop:widget.gapFromTop,
           );
     }
     else if(data.img != null)
@@ -264,7 +276,10 @@ class _AnimatedBottomNavigationBarState
             iconImg: data.img,
             iconScale: _iconScale,
             iconSize: widget.iconSize,
+            label: data.label,
             onTap: ontap,
+            labelGap:widget.labelGap,
+            gapFromTop:widget.gapFromTop,
           );
     }
     else
@@ -278,7 +293,9 @@ class IconDataOrImgProvider
   final IconData icon;
   ///either icon or img
   final ImageProvider img;
-  IconDataOrImgProvider({this.icon,this.img})
+  ///this will show under the icon so it should be any class that acts as a text
+  final Widget label;
+  IconDataOrImgProvider({this.icon,this.img,this.label})
   :
   assert(icon!=null || img!=null);
   

@@ -43,10 +43,10 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   CurvedAnimation curve;
 
   final iconList = <IconDataOrImgProvider>[
-    IconDataOrImgProvider(icon: Icons.brightness_5,),
-    IconDataOrImgProvider(icon: Icons.brightness_4,),
-    IconDataOrImgProvider(img: AssetImage('testIcon.png'),),
-    IconDataOrImgProvider(icon: Icons.brightness_7,),
+    IconDataOrImgProvider(icon: Icons.brightness_5,label: Text("label1",style: TextStyle(color: Colors.white),)),
+    IconDataOrImgProvider(icon: Icons.brightness_4,label: Text("label2",style: TextStyle(color: Colors.white),)),
+    IconDataOrImgProvider(img: AssetImage('testIcon.png'),label: Text("label3",style: TextStyle(color: Colors.white),)),
+    IconDataOrImgProvider(icon: Icons.brightness_7,label: Text("label4",style: TextStyle(color: Colors.white),)),
   ];
 
   @override
@@ -112,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar(
+        height: 60,
         icons: iconList,
         backgroundColor: HexColor('#373A36'),
         activeIndex: _bottomNavIndex,

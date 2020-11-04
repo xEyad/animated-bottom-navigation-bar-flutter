@@ -15,7 +15,14 @@ class NavigationBarItem extends StatelessWidget {
   final double iconScale;
   final double iconSize;
   final VoidCallback onTap;
-
+  ///this will show under the icon so it should be any class that acts as a text
+  final Widget label;
+  ///the separating distance between [label] and icon.
+  ///useless if [label] is null
+  final double labelGap;
+  ///distance from the top of the bottom bar
+  ///useless if [label] is null
+  final double gapFromTop;
   NavigationBarItem({
     this.isActive,
     this.bubbleRadius,
@@ -28,6 +35,9 @@ class NavigationBarItem extends StatelessWidget {
     this.iconScale,
     this.iconSize,
     this.onTap,
+    this.label,
+    this.labelGap,
+    this.gapFromTop
   }) : 
   assert(iconData!=null || iconImg!=null),
   super();
@@ -47,7 +57,7 @@ class NavigationBarItem extends StatelessWidget {
           child: InkWell(
             child: Transform.scale(
               scale: isActive ? iconScale : 1,
-              child: _icon(),
+              child: _indicator(),
             ),
             splashColor: Colors.transparent,
             focusColor: Colors.transparent,
@@ -58,6 +68,26 @@ class NavigationBarItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _indicator()
+  {
+    if(label!=null)
+      return _labeledIcon();
+    else
+      return _icon();
+  }
+
+  Widget _labeledIcon()
+  {
+    return Column(
+            children: [
+              SizedBox(height: gapFromTop,),
+              _icon(),
+              SizedBox(height: labelGap,),
+              label
+            ],
+          );
   }
 
   Widget _icon()
